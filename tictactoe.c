@@ -6,7 +6,7 @@
 /*   By: chales <chales@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 16:27:30 by chales            #+#    #+#             */
-/*   Updated: 2023/03/09 20:12:52 by chales           ###   ########.fr       */
+/*   Updated: 2023/03/09 22:11:16 by chales           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ int main()
 	ttt_s	ttt;
 	int		i;
 	int		winner;
+	char 	*str;
 
 	i = 0;
 	system("clear");
@@ -179,7 +180,8 @@ int main()
 		if (i % 2)
 		{
 			ft_printf("Player O Turn : \n");
-			ttt.num = ft_atoi(get_next_line(0));
+			str = get_next_line(0);
+			ttt.num = ft_atoi(str);
 			if (!check_repeat(ttt.num))
 			{
 				ft_printf("Can't Place There!\n");
@@ -194,7 +196,8 @@ int main()
 		else
 		{
 			ft_printf("Player X Turn : \n	");
-			ttt.num = ft_atoi(get_next_line(0));
+			str = get_next_line(0);
+			ttt.num = ft_atoi(str);
 			if (!check_repeat(ttt.num))
 			{
 				ft_printf("Can't Place There!\n");
@@ -214,9 +217,11 @@ int main()
 				ft_printf("Player X Wins! Congrats!\n");
 			else if (winner == 79)
 				ft_printf("Player O Wins! Congrats!\n");
+			free(str);
 			free_space(ttt.sheet);
 			return (0);
 		}
+		free(str);
 	}
 	ft_printf("Seems Like We Have a Tie! Rematch?\n");
 	free_space(ttt.sheet);
