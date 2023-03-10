@@ -6,7 +6,7 @@
 /*   By: chales <chales@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 16:27:30 by chales            #+#    #+#             */
-/*   Updated: 2023/03/09 22:11:16 by chales           ###   ########.fr       */
+/*   Updated: 2023/03/10 12:42:35 by chales           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,12 +163,31 @@ int check_win(int **matrix)
 	return (0);
 }
 
+void turn_num(char play, int c, ttt_s *ttt, int *i)
+{
+	char *str;
+
+	ft_printf("Player %c Turn : \n", play);
+	str = get_next_line(0);
+	ttt->num = ft_atoi(str);
+	if (!check_repeat(ttt->num))
+	{
+		ft_printf("Can't Place There!\n");
+		i--;
+	}
+	else
+	{
+		system("clear");
+		print_play(ttt, c);
+	}
+	free(str);
+}
+
 int main()
 {
 	ttt_s	ttt;
 	int		i;
 	int		winner;
-	char 	*str;
 
 	i = 0;
 	system("clear");
@@ -178,37 +197,9 @@ int main()
 	while (i < 9)
 	{
 		if (i % 2)
-		{
-			ft_printf("Player O Turn : \n");
-			str = get_next_line(0);
-			ttt.num = ft_atoi(str);
-			if (!check_repeat(ttt.num))
-			{
-				ft_printf("Can't Place There!\n");
-				i--;
-			}
-			else
-			{
-				system("clear");
-				print_play(&ttt, 79);
-			}
-		}
+			turn_num('O', 79, &ttt, &i);
 		else
-		{
-			ft_printf("Player X Turn : \n	");
-			str = get_next_line(0);
-			ttt.num = ft_atoi(str);
-			if (!check_repeat(ttt.num))
-			{
-				ft_printf("Can't Place There!\n");
-				i--;
-			}
-			else
-			{
-				system("clear");
-				print_play(&ttt, 88);
-			}
-		}
+			turn_num('X', 88, &ttt, &i);
 		i++;
 		if(check_win(ttt.sheet))
 		{
@@ -217,11 +208,9 @@ int main()
 				ft_printf("Player X Wins! Congrats!\n");
 			else if (winner == 79)
 				ft_printf("Player O Wins! Congrats!\n");
-			free(str);
 			free_space(ttt.sheet);
 			return (0);
 		}
-		free(str);
 	}
 	ft_printf("Seems Like We Have a Tie! Rematch?\n");
 	free_space(ttt.sheet);
