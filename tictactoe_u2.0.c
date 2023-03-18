@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tictactoe_u2.0.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chales <chales@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plopes-c <plopes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 20:06:33 by plopes-c          #+#    #+#             */
-/*   Updated: 2023/03/18 08:31:17 by chales           ###   ########.fr       */
+/*   Updated: 2023/03/18 22:30:41 by plopes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tictactoe.h"
+
+void clear(ttt2_s game[9], int w);
 
 void print_sheet(ttt2_s game[9])
 {
@@ -34,6 +36,42 @@ void print_sheet(ttt2_s game[9])
 	ft_printf("       %s   |   %s   |   %s   \n", game[6].matrix[4], game[7].matrix[4], game[8].matrix[4]);	                           
 	ft_printf("                     |                 |                 \n\n");
 }			   
+
+void build_win(ttt2_s game[9], int w, char c)
+{
+	int i;
+	clear(game, w);
+	if (c == 'X')
+	{
+		// game[w].matrix[0][4] = '\\';
+		game[w].matrix[0][4] = '\\';
+		game[w].matrix[1][5] = '\\';
+		game[w].matrix[2][6] = '\\';
+		game[w].matrix[3][7] = '\\';
+		game[w].matrix[3][4] = '/';
+		game[w].matrix[2][5] = '/';
+		game[w].matrix[1][6] = '/';
+		game[w].matrix[0][7] = '/';
+		// game[w].matrix[0][9] = '/';
+	}
+	if (c == 'O')
+	{
+		i = 3;
+		while (i < 9)
+		{
+			game[w].matrix[0][i] = '_';
+			game[w].matrix[3][i] = '_';
+			i++;
+		}
+		i = 1;
+		while (i < 4)
+		{
+			game[w].matrix[i][2] = '|';
+			game[w].matrix[i][9] = '|';
+			i++;
+		}
+	}
+}
 
 void build_sections(ttt2_s game[9])
 {
@@ -66,7 +104,46 @@ void build_sections(ttt2_s game[9])
 	}
 }
 
-void win(ttt2_s game[9], int w, char c)
+int	check_game_won(ttt2_s game[9])
+{
+	if (game[game[0].game_on - 1].won)
+	{
+		ft_printf("Game Already Won!\n");
+		game[0].game_on = 0;
+		return (0);
+	}
+	return (1);
+}
+
+int		get_input(ttt2_s game[9], char c)
+{
+	char *str;
+	int			small_play;
+
+	if (!game[0].game_on)
+	{
+		ft_printf("Player %c Choose the game to play in: ", c);
+		str = get_next_line(0);
+		game[0].game_on = ft_atoi(str);
+		free(str);
+		if (game[0].game_on < 1 || game[0].game_on > 9)
+		{
+			ft_printf("Play Between 1 and 9!\n");
+			game[0].game_on = 0;
+			return (0);
+		}
+		if (!check_game_won(game))
+			return (0);
+	}
+	ft_printf("Playing on: %i\n", game[0].game_on);
+	ft_printf("Player %c : ", c);
+	str = get_next_line(0);
+	small_play = ft_atoi(str);
+	free(str);
+	return(small_play);
+}
+
+void clear(ttt2_s game[9], int w)
 {
 	int x;
 	int	y;
@@ -77,12 +154,13 @@ void win(ttt2_s game[9], int w, char c)
 	{
 		while (x < 11)
 		{
-			game[w].matrix[y][x] = c;
+			game[w].matrix[y][x] = ' ';
 			x++;
 		}
 		x = 0;
 		y++;
 	}
+	game[w].won = 1;
 }
 
 char		check_win(ttt2_s game[9], int w)
@@ -106,106 +184,128 @@ char		check_win(ttt2_s game[9], int w)
 	return (0);
 }
 
-int	check_value(ttt2_s game[9], int place, int last_place, int *i)
+int	check_value(ttt2_s game[9], int small_play, int big_play, int *i)
 {
-	if (place < 1 || place > 9)
+	if ((small_play < 1 || small_play > 9)  && !game[big_play - 1].won)
 	{
 		ft_printf("Don't try to break my code!\n");
 		return (0);
 	}
 	if ((*i) > 0)
 	{
-		if (game[last_place - 1].visited[place - 1])
+		if (game[big_play - 1].visited[small_play - 1])
 		{		
 			ft_printf("Nah, can't play there!\n");
 			return (0);
 		}
-	}	
+	}
 	return (1);
 }
 
-void turn(ttt2_s game[9], char turn, int place, int last_place)
+void turn(ttt2_s game[9], char turn, int small_play, int big_play)
 {
-	last_place -= 1;
-	if (place == 1)
-		game[last_place].matrix[0][1] = turn;
-	if (place == 2)
-		game[last_place].matrix[0][5] = turn;
-	if (place == 3)
-		game[last_place].matrix[0][9] = turn;
-	if (place == 4)
-		game[last_place].matrix[2][1] = turn;
-	if (place == 5)
-		game[last_place].matrix[2][5] = turn;
-	if (place == 6)
-		game[last_place].matrix[2][9] = turn;
-	if (place == 7)
-		game[last_place].matrix[4][1] = turn;
-	if (place == 8)
-		game[last_place].matrix[4][5] = turn;
-	if (place == 9)
-		game[last_place].matrix[4][9] = turn;
-	game[last_place].visited[place - 1] = 1;
+	big_play -= 1;
+	if (small_play == 1)
+		game[big_play].matrix[0][1] = turn;
+	if (small_play == 2)
+		game[big_play].matrix[0][5] = turn;
+	if (small_play == 3)
+		game[big_play].matrix[0][9] = turn;
+	if (small_play == 4)
+		game[big_play].matrix[2][1] = turn;
+	if (small_play == 5)
+		game[big_play].matrix[2][5] = turn;
+	if (small_play == 6)
+		game[big_play].matrix[2][9] = turn;
+	if (small_play == 7)
+		game[big_play].matrix[4][1] = turn;
+	if (small_play == 8)
+		game[big_play].matrix[4][5] = turn;
+	if (small_play == 9)
+		game[big_play].matrix[4][9] = turn;
+	game[big_play].visited[small_play - 1] = 1;
 }
 
 void turn_num(ttt2_s game[9], int *i, char c)
 {
-	char *str;
-	static int	last_place;
-	int			place;
+	int			small_play;
 	char		winner;
+	int			check_game;
 
-	ft_printf("Playing on : %i\n", last_place);
-	ft_printf("Player %c : ", c);
-	str = get_next_line(0);
-	place = ft_atoi(str);
-	if (!check_value(game, place, last_place, i))
+	small_play = get_input(game, c);
+	check_game = check_value(game, small_play, game[0].game_on, i);
+	if (!check_game || !small_play)
 	{
 		(*i)--;
 		return ;
 	}
-	if (!last_place)
-	{
-		last_place = place;
-		free(str);
-		system("clear");
-		print_sheet(game);
-		ft_printf("Playing on : %i\n", last_place);
-		ft_printf("Player %c : ", c);
-		str = get_next_line(0);
-		place = ft_atoi(str);
-	}
-	if (check_value(game, place, last_place, i))
+	else
 	{
 		system("clear");
-		turn(game, c, place, last_place);
-		winner = check_win(game, last_place - 1);
+		turn(game, c, small_play, game[0].game_on);
+		winner = check_win(game, game[0].game_on - 1);
+		game[game[0].game_on - 1].c_won = winner; 
 		if (winner == 'X')
-			win(game, last_place - 1, 'X');
+			build_win(game, game[0].game_on - 1, 'X');
 		if (winner == 'O')
-			win(game, last_place - 1, 'O');
+			build_win(game, game[0].game_on - 1, 'O');
+		if (game[small_play - 1].won)
+			game[0].game_on = 0;
+		else
+			game[0].game_on = small_play;
 		print_sheet(game);
-		last_place = place;
-		free(str);
 	}
+}
+
+char check_big_win(ttt2_s game[9])
+{
+	if (game[0].c_won == game[1].c_won && game[0].c_won == game[2].c_won)
+		return (game[0].c_won);
+	if (game[3].c_won == game[4].c_won && game[3].c_won == game[5].c_won)
+		return (game[3].c_won);
+	if (game[6].c_won == game[7].c_won && game[6].c_won == game[8].c_won)
+		return (game[6].c_won);
+	if (game[0].c_won == game[3].c_won && game[0].c_won == game[6].c_won)
+		return (game[0].c_won);
+	if (game[1].c_won == game[4].c_won && game[1].c_won == game[7].c_won)
+		return (game[1].c_won);
+	if (game[2].c_won == game[5].c_won && game[2].c_won == game[8].c_won)
+		return (game[2].c_won);
+	if (game[0].c_won == game[4].c_won && game[0].c_won == game[8].c_won)
+		return (game[0].c_won);
+	if (game[2].c_won == game[4].c_won && game[2].c_won == game[6].c_won)
+		return (game[2].c_won);
+	return (0);
 }
 
 int main()
 {
 	static ttt2_s	game[9];
 	int				i;
-
+	char			big_winner;
 	i = 0;
 	build_sections(game);
 	system("clear");
 	print_sheet(game);
-	while (i < 90)
+	while (i <= 81)
 	{
 		if (i % 2)
 			turn_num(game, &i, 'O');
 		else
 			turn_num(game, &i, 'X');
+		big_winner = check_big_win(game);
+		if (big_winner == 'X')
+		{
+			ft_printf("Congrats X Won!\n");
+			return (0);
+		}
+		if (big_winner == 'O')
+		{
+			ft_printf("Congrats O Won!\n");
+			return (0);
+		}
 		i++;
-	}	
+	}
+	ft_printf("Seems Like We Have a Draw!\n");
 	return (0);
 }
