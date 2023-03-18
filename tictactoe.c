@@ -6,7 +6,7 @@
 /*   By: chales <chales@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 16:27:30 by chales            #+#    #+#             */
-/*   Updated: 2023/03/10 12:42:35 by chales           ###   ########.fr       */
+/*   Updated: 2023/03/18 07:55:45 by chales           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,36 +130,23 @@ void free_space(int **matrix)
 
 int check_win(int **matrix)
 {
-	int	i;
-	int	j;
 
-	i = 0;
-	j = 0;
-	while (i < 3)
-	{
-		while (j < 3)
-		{
-			if (matrix[0][0] == matrix[0][1] && matrix[0][0] == matrix[0][2])
-				return (matrix[0][0]);
-			if (matrix[1][0] == matrix[1][1] && matrix[1][0] == matrix[1][2])
-				return (matrix[1][0]);
-			if (matrix[2][0] == matrix[2][1] && matrix[2][0] == matrix[2][2])
-				return (matrix[2][0]);
-			if (matrix[0][0] == matrix[1][0] && matrix[0][0] == matrix[2][0])
-				return (matrix[0][0]);
-			if (matrix[0][1] == matrix[1][1] && matrix[0][1] == matrix[2][1])
-				return (matrix[0][1]);
-			if (matrix[0][2] == matrix[1][2] && matrix[0][2] == matrix[2][2])
-				return (matrix[0][2]);
-			if (matrix[0][0] == matrix[1][1] && matrix[0][0] == matrix[2][2])
-				return (matrix[0][0]);
-			if (matrix[0][2] == matrix[1][1] && matrix[0][2] == matrix[2][0])
-				return (matrix[0][2]);
-			j++;
-		}
-		i++;
-		j = 0;
-	}
+	if (matrix[0][0] == matrix[0][1] && matrix[0][0] == matrix[0][2])
+		return (matrix[0][0]);
+	if (matrix[1][0] == matrix[1][1] && matrix[1][0] == matrix[1][2])
+		return (matrix[1][0]);
+	if (matrix[2][0] == matrix[2][1] && matrix[2][0] == matrix[2][2])
+		return (matrix[2][0]);
+	if (matrix[0][0] == matrix[1][0] && matrix[0][0] == matrix[2][0])
+		return (matrix[0][0]);
+	if (matrix[0][1] == matrix[1][1] && matrix[0][1] == matrix[2][1])
+		return (matrix[0][1]);
+	if (matrix[0][2] == matrix[1][2] && matrix[0][2] == matrix[2][2])
+		return (matrix[0][2]);
+	if (matrix[0][0] == matrix[1][1] && matrix[0][0] == matrix[2][2])
+		return (matrix[0][0]);
+	if (matrix[0][2] == matrix[1][1] && matrix[0][2] == matrix[2][0])
+		return (matrix[0][2]);
 	return (0);
 }
 
@@ -173,7 +160,7 @@ void turn_num(char play, int c, ttt_s *ttt, int *i)
 	if (!check_repeat(ttt->num))
 	{
 		ft_printf("Can't Place There!\n");
-		i--;
+		(*i)--;
 	}
 	else
 	{

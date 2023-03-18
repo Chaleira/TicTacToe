@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tictactoe_u2.0.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plopes-c <plopes-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chales <chales@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 20:06:33 by plopes-c          #+#    #+#             */
-/*   Updated: 2023/03/17 23:30:35 by plopes-c         ###   ########.fr       */
+/*   Updated: 2023/03/18 08:31:17 by chales           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,46 @@ void build_sections(ttt2_s game[9])
 	}
 }
 
+void win(ttt2_s game[9], int w, char c)
+{
+	int x;
+	int	y;
+
+	y = 0;
+	x = 0;
+	while (y < 5)
+	{
+		while (x < 11)
+		{
+			game[w].matrix[y][x] = c;
+			x++;
+		}
+		x = 0;
+		y++;
+	}
+}
+
+char		check_win(ttt2_s game[9], int w)
+{
+	if (game[w].matrix[0][1] == game[w].matrix[0][5] && game[w].matrix[0][1] == game[w].matrix[0][9])
+		return (game[w].matrix[0][1]);
+	if (game[w].matrix[2][1] == game[w].matrix[2][5] && game[w].matrix[2][1] == game[w].matrix[2][9])
+		return (game[w].matrix[2][1]);
+	if (game[w].matrix[4][1] == game[w].matrix[4][5] && game[w].matrix[4][1] == game[w].matrix[4][9])
+		return (game[w].matrix[4][1]);
+	if (game[w].matrix[0][1] == game[w].matrix[2][1] && game[w].matrix[0][1] == game[w].matrix[4][1])
+		return (game[w].matrix[0][1]);
+	if (game[w].matrix[0][5] == game[w].matrix[2][5] && game[w].matrix[0][5] == game[w].matrix[4][5])
+		return (game[w].matrix[0][5]);
+	if (game[w].matrix[0][9] == game[w].matrix[2][9] && game[w].matrix[0][9] == game[w].matrix[4][9])
+		return (game[w].matrix[0][9]);
+	if (game[w].matrix[0][1] == game[w].matrix[2][5] && game[w].matrix[0][1] == game[w].matrix[4][9])
+		return (game[w].matrix[0][1]);
+	if (game[w].matrix[0][9] == game[w].matrix[2][5] && game[w].matrix[0][9] == game[w].matrix[4][1])
+		return (game[w].matrix[0][9]);
+	return (0);
+}
+
 int	check_value(ttt2_s game[9], int place, int last_place, int *i)
 {
 	if (place < 1 || place > 9)
@@ -84,7 +124,7 @@ int	check_value(ttt2_s game[9], int place, int last_place, int *i)
 	return (1);
 }
 
-void print_play(ttt2_s game[9], char turn, int place, int last_place)
+void turn(ttt2_s game[9], char turn, int place, int last_place)
 {
 	last_place -= 1;
 	if (place == 1)
@@ -106,7 +146,6 @@ void print_play(ttt2_s game[9], char turn, int place, int last_place)
 	if (place == 9)
 		game[last_place].matrix[4][9] = turn;
 	game[last_place].visited[place - 1] = 1;
-	print_sheet(game);
 }
 
 void turn_num(ttt2_s game[9], int *i, char c)
@@ -114,9 +153,10 @@ void turn_num(ttt2_s game[9], int *i, char c)
 	char *str;
 	static int	last_place;
 	int			place;
+	char		winner;
 
-	ft_printf("Player %c : \n", c);
 	ft_printf("Playing on : %i\n", last_place);
+	ft_printf("Player %c : ", c);
 	str = get_next_line(0);
 	place = ft_atoi(str);
 	if (!check_value(game, place, last_place, i))
@@ -128,13 +168,23 @@ void turn_num(ttt2_s game[9], int *i, char c)
 	{
 		last_place = place;
 		free(str);
+		system("clear");
+		print_sheet(game);
+		ft_printf("Playing on : %i\n", last_place);
+		ft_printf("Player %c : ", c);
 		str = get_next_line(0);
 		place = ft_atoi(str);
 	}
 	if (check_value(game, place, last_place, i))
 	{
 		system("clear");
-		print_play(game, c, place, last_place);
+		turn(game, c, place, last_place);
+		winner = check_win(game, last_place - 1);
+		if (winner == 'X')
+			win(game, last_place - 1, 'X');
+		if (winner == 'O')
+			win(game, last_place - 1, 'O');
+		print_sheet(game);
 		last_place = place;
 		free(str);
 	}
