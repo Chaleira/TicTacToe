@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chales <chales@student.42.fr>              +#+  +:+       +#+         #
+#    By: plopes-c <plopes-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/09 16:32:02 by chales            #+#    #+#              #
-#    Updated: 2023/03/10 12:33:06 by chales           ###   ########.fr        #
+#    Updated: 2023/03/17 20:26:31 by plopes-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,14 +14,14 @@ NAME = tictactoe
 NAME_U = tictactoe_ultimate
 
 SRC = tictacoe.c
-SRC_U = tictactoe_ultimate.c
+SRC_U = tictactoe_u2.0.c
 
 LIBFT = libft/libft.a
 
 OBJ = tictactoe.o
-OBJ_U = tictactoe_ultimate.o
+OBJ_U = tictactoe_u2.0.o
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fPIE
 
 RM = rm -fr
 

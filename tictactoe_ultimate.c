@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tictactoe_ultimate.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chales <chales@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plopes-c <plopes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 12:16:35 by chales            #+#    #+#             */
-/*   Updated: 2023/03/10 16:31:49 by chales           ###   ########.fr       */
+/*   Updated: 2023/03/17 20:04:13 by plopes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,11 @@ void set_3d_matrix(ttt_3d_s *ttt_3d)
 	int i;
 	int	j;
 	int count;
-	int num;
+	// int num;
 
 	i = 0;
 	j = 0;
-	num = 48;
+	// num = 48;
 	count = 0;
 	while (count < 9)
 	{
@@ -124,8 +124,8 @@ void set_3d_matrix(ttt_3d_s *ttt_3d)
 		{
 			while (j < 3)
 			{
-				ttt_3d->matrix_3d[count][i][j] = num;
-				num++;
+				ttt_3d->matrix_3d[count][i][j] = ' ';
+				// num++;
 				j++;
 			}
 			j = 0;
@@ -140,26 +140,26 @@ void set_3d_matrix(ttt_3d_s *ttt_3d)
 // {
 // 	(void)ttt;
 // 	ft_printf("                 |                 |                 \n");	0
-// 	ft_printf("      |   |      |      |   |      |      |   |      \n");	1
-// 	ft_printf("   ---|---|---   |   ---|---|---   |   ---|---|---   \n");	2
-// 	ft_printf("      |   |      |      |   |      |      |   |      \n");	3
-// 	ft_printf("   ---|---|---   |   ---|---|---   |   ---|---|---   \n");	4
-// 	ft_printf("      |   |      |      |   |      |      |   |      \n");	5
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            1
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            2
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            3
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            4
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            5
 // 	ft_printf("-----------------|-----------------|-----------------\n");	6
-// 	ft_printf("      |   |      |      |   |      |      |   |      \n");	7
-// 	ft_printf("   ---|---|---   |   ---|---|---   |   ---|---|---   \n");	8
-// 	ft_printf("      |   |      |      |   |      |      |   |      \n");	9
-// 	ft_printf("   ---|---|---   |   ---|---|---   |   ---|---|---   \n");	10
-// 	ft_printf("      |   |      |      |   |      |      |   |      \n");	11
+// 	ft_printf("   %s   |   %s   |   %s   \n");                            	7
+// 	ft_printf("   %s   |   %s   |   %s   \n");                            	8
+// 	ft_printf("   %s   |   %s   |   %s   \n");                            	9
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            10
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            11
 // 	ft_printf("-----------------|-----------------|-----------------\n");	12
-// 	ft_printf("      |   |      |      |   |      |      |   |      \n");	13
-// 	ft_printf("   ---|---|---   |   ---|---|---   |   ---|---|---   \n");	14
-// 	ft_printf("      |   |      |      |   |      |      |   |      \n");	15
-// 	ft_printf("   ---|---|---   |   ---|---|---   |   ---|---|---   \n");	16
-// 	ft_printf("      |   | s    |      |   |      |      |   |      \n");	17
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            13
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            14
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            15
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            16
+// 	ft_printf("   %s   |   %s   |   %s   \n");	                            17
 // 	ft_printf("                 |                 |                 \n\n");	18
-//}			   012345678911111111112222222222333333333344444444445555
-//						 01234567890123456789012345678901234567890123
+//}			   
+//			
 
 int main ()
 {

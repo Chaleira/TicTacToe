@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tictactoe.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chales <chales@student.42.fr>              +#+  +:+       +#+        */
+/*   By: plopes-c <plopes-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 16:30:01 by chales            #+#    #+#             */
-/*   Updated: 2023/03/10 13:40:13 by chales           ###   ########.fr       */
+/*   Updated: 2023/03/17 23:33:52 by plopes-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ typedef struct tictactoe_matrix
 
 typedef struct tictactoe_matrix_3d
 {
-	ttt_s 	matrix_2d;
-	int		***matrix_3d;
-}				ttt_3d_s;
+	char				matrix[5][12];
+	char				won;
+	int					visited[9];
+	int					house_on[9];
+}				ttt2_s;
 
 
 #endif
