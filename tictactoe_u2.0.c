@@ -6,13 +6,35 @@
 /*   By: chales <chales@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 20:06:33 by plopes-c          #+#    #+#             */
-/*   Updated: 2023/03/19 04:29:29 by chales           ###   ########.fr       */
+/*   Updated: 2023/03/22 06:19:17 by chales           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tictactoe.h"
 
 void clear(ttt2_s game[9], int w);
+
+void welcoming(void)
+{
+	ft_printf("\n\nThis is a TicTacToe Ultimate game!\n\n");
+	ft_printf("The Rules are simple:\n\n	1 - The first player chooses where to start\n\n	2 - You can only play in the (big game) house where your opponent played last in the small game\n\n	3 - If that small game is already finished you can choose in which game you want to play next!\n\n");
+	ft_printf("Press ENTER to start...");
+	get_next_line(0);
+}
+
+int check_tie(ttt2_s game[9])
+{
+	int i;
+
+	i = 0;
+	while (i < 9)
+	{
+		if (game[i].won == 0 || game[i].tied < 9)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 void print_sheet(ttt2_s game[9])
 {
@@ -139,6 +161,12 @@ int		get_input(ttt2_s game[9], char c)
 			game[0].game_on = 0;
 			return (0);
 		}
+		if (game[game[0].game_on - 1].tied == 9)
+		{
+			game[0].game_on = 0;
+			ft_printf("That Game is tied!\n");
+			return (0);
+		}
 		if (!check_game_won(game))
 			return (0);
 	}
@@ -230,6 +258,7 @@ void turn(ttt2_s game[9], char turn, int small_play, int big_play)
 	if (small_play == 9)
 		game[big_play].matrix[4][9] = turn;
 	game[big_play].visited[small_play - 1] = 1;
+	game[big_play].tied += 1;
 }
 
 void turn_num(ttt2_s game[9], int *i, char c)
@@ -248,8 +277,10 @@ void turn_num(ttt2_s game[9], int *i, char c)
 	{
 		system("clear");
 		turn(game, c, small_play, game[0].game_on);
+		if (game[game[0].game_on].tied >= 9)
+			clear(game, game[0].game_on);
 		build_win(game, game[0].game_on - 1, check_win(game, game[0].game_on - 1));
-		if (game[small_play - 1].won)
+		if (game[small_play - 1].won || game[small_play - 1].tied == 9)
 			game[0].game_on = 0;
 		else
 			game[0].game_on = small_play;
@@ -284,6 +315,8 @@ int main()
 	int				i;
 	char			big_winner;
 	i = 0;
+	system("clear");
+	welcoming();
 	build_sections(game);
 	system("clear");
 	print_sheet(game);
@@ -304,8 +337,12 @@ int main()
 			ft_printf("Congrats O Won!\n");
 			return (0);
 		}
+		else if (!check_tie(game))
+		{
+			ft_printf("Seems Like We Have a Draw!\n");
+			return (0);
+		}
 		i++;
 	}
-	ft_printf("Seems Like We Have a Draw!\n");
 	return (0);
 }
