@@ -6,7 +6,7 @@
 /*   By: chales <chales@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 20:06:33 by plopes-c          #+#    #+#             */
-/*   Updated: 2023/03/22 06:19:17 by chales           ###   ########.fr       */
+/*   Updated: 2023/03/24 18:55:11 by chales           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,14 +161,14 @@ int		get_input(ttt2_s game[9], char c)
 			game[0].game_on = 0;
 			return (0);
 		}
+		if (!check_game_won(game))
+			return (0);
 		if (game[game[0].game_on - 1].tied == 9)
 		{
 			game[0].game_on = 0;
 			ft_printf("That Game is tied!\n");
 			return (0);
 		}
-		if (!check_game_won(game))
-			return (0);
 	}
 	ft_printf("Playing on: %i\n", game[0].game_on);
 	ft_printf("Player %c : ", c);
@@ -277,8 +277,8 @@ void turn_num(ttt2_s game[9], int *i, char c)
 	{
 		system("clear");
 		turn(game, c, small_play, game[0].game_on);
-		if (game[game[0].game_on].tied >= 9)
-			clear(game, game[0].game_on);
+		if (game[game[0].game_on - 1].tied >= 9 && !check_win(game, game[0].game_on - 1))
+			clear(game, game[0].game_on - 1);
 		build_win(game, game[0].game_on - 1, check_win(game, game[0].game_on - 1));
 		if (game[small_play - 1].won || game[small_play - 1].tied == 9)
 			game[0].game_on = 0;
