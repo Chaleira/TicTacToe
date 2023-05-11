@@ -2,7 +2,14 @@
 A simple and a Ultimate TicTacToe to run on your terminal
 
 1. Clone the repository.
-2. 
+
+		"git clone https://github.com/Chaleira/TicTacToe.git"
+
+2.
+
+		"cd TicTacToe"
+
+3. 
 - If you want to play the small version do:
 
 		"make run"
