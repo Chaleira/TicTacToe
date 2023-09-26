@@ -1,5 +1,5 @@
 # TicTacToe
-A simple and a Ultimate TicTacToe to run on your terminal
+A simple and a Ultimate TicTacToe to run on your terminal and also a complex one...
 
 1. Clone the repository.
 
